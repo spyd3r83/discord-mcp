@@ -1,0 +1,11 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oxc-project/oxlint/main/npm/oxlint/configuration_schema.json",
+  "rules": {
+    "no-explicit-any": "error",
+    "no-unused-vars": "error"
+  },
+  "plugins": ["typescript", "unicorn"],
+  "env": {
+    "builtin": true
+  }
+}
