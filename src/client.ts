@@ -42,6 +42,9 @@ export function getClient(): Client {
     logger.error("Discord client error", err.message);
   });
 
-  void instance.login(token);
+  instance.login(token).catch((err: unknown) => {
+    logger.error("Discord login failed — server will continue without a connected bot", String(err));
+    instance = null;
+  });
   return instance;
 }
