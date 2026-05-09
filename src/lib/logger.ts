@@ -18,12 +18,8 @@ function log(level: LogLevel, message: string, data?: unknown): void {
     message,
     ...(data !== undefined ? { data } : {}),
   };
-  const line = JSON.stringify(entry);
-  if (level === "error" || level === "warn") {
-    console.error(line);
-  } else {
-    console.log(line);
-  }
+  // Always write to stderr — stdout is reserved for the MCP stdio transport channel.
+  process.stderr.write(JSON.stringify(entry) + "\n");
 }
 
 export const logger = {

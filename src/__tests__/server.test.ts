@@ -12,12 +12,10 @@ vi.mock("../client.js", () => ({
   })),
 }));
 
-type ServerInternal = McpServer & {
-  _registeredTools: Record<string, unknown>;
-};
-
+// Access internal tool registry via unknown cast to avoid private-field TS error.
 function registeredToolNames(server: McpServer): string[] {
-  return Object.keys((server as ServerInternal)._registeredTools);
+  const internal = server as unknown as { _registeredTools: Record<string, unknown> };
+  return Object.keys(internal._registeredTools);
 }
 
 describe("MCP server", () => {
