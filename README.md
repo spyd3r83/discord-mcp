@@ -1,39 +1,102 @@
 # discord-mcp
 
-A full-featured Discord MCP (Model Context Protocol) server built with Bun and TypeScript. Exposes the complete Discord bot API surface as MCP tools over HTTP/SSE, ready to run as a standalone container.
+A full-featured Discord MCP server — 54 tools covering messages, channels, guilds, roles, members, reactions, threads, webhooks, moderation, audit logs, DMs, and forums. Runs over stdio, launchable with a single `bunx` command.
 
 ## Features
 
-- **50+ Discord tools** across messages, channels, guilds, roles, members, reactions, threads, webhooks, moderation, audit log, DMs, and forum channels
-- **Streamable HTTP transport** — works over the network, runs as a container
-- **MCP endpoint**: `http://localhost:3000/mcp`
-- **Health endpoint**: `http://localhost:3000/health`
+- **54 Discord tools** — messages, channels, guilds, roles, members, reactions, threads, webhooks, moderation, audit log, DMs, and forum channels
+- **stdio transport** — MCP over stdin/stdout, no HTTP server required
+- **One-command launch** — `bunx github:spyd3r83/discord-mcp`
+- **Bot token auth** — just set `DISCORD_BOT_TOKEN`
 - Strict TypeScript, Zod validation on all inputs, structured error responses
+
+## Prerequisites
+
+- A Discord bot token from the [Developer Portal](https://discord.com/developers/applications)
+- [Bun](https://bun.sh) (recommended) or Node.js 18+ with npx
 
 ## Quick Start
 
 ```bash
-git clone https://github.com/your-org/discord-mcp
-cd discord-mcp
-cp .env.example .env
-# Edit .env and set DISCORD_BOT_TOKEN
-bun install
-bun dev
+export DISCORD_BOT_TOKEN="your-bot-token-here"
+bunx github:spyd3r83/discord-mcp
 ```
 
-## Docker
+Add it to your MCP client config (see below) and you're done.
 
-```bash
-docker build -t discord-mcp .
-docker run -e DISCORD_BOT_TOKEN=your-token-here -p 3000:3000 discord-mcp
+## Configuration
+
+### Claude Desktop
+
+**macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+**Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+
+```json
+{
+  "mcpServers": {
+    "discord": {
+      "command": "bunx",
+      "args": ["github:spyd3r83/discord-mcp"],
+      "env": {
+        "DISCORD_BOT_TOKEN": "your-bot-token-here"
+      }
+    }
+  }
+}
 ```
 
-## MCP Endpoint
+### VS Code
 
-Configure your MCP client to connect to:
+Project-level: `.vscode/mcp.json` — or add to your user profile `mcp.json`.
 
+```json
+{
+  "servers": {
+    "discord": {
+      "command": "bunx",
+      "args": ["github:spyd3r83/discord-mcp"],
+      "env": {
+        "DISCORD_BOT_TOKEN": "your-bot-token-here"
+      }
+    }
+  }
+}
 ```
-http://localhost:3000/mcp
+
+### Cursor
+
+`.cursor/mcp.json`
+
+```json
+{
+  "mcpServers": {
+    "discord": {
+      "command": "bunx",
+      "args": ["github:spyd3r83/discord-mcp"],
+      "env": {
+        "DISCORD_BOT_TOKEN": "your-bot-token-here"
+      }
+    }
+  }
+}
+```
+
+### OpenCode
+
+`opencode.json`
+
+```json
+{
+  "mcp": {
+    "discord": {
+      "type": "local",
+      "command": ["bunx", "github:spyd3r83/discord-mcp"],
+      "environment": {
+        "DISCORD_BOT_TOKEN": "{env:DISCORD_BOT_TOKEN}"
+      }
+    }
+  }
+}
 ```
 
 ## Required Bot Permissions & Gateway Intents
@@ -50,8 +113,17 @@ Enable the following **Privileged Gateway Intents** in the Discord Developer Por
 | Variable | Required | Default | Description |
 |---|---|---|---|
 | `DISCORD_BOT_TOKEN` | ✅ | — | Discord bot token |
-| `PORT` | ❌ | `3000` | HTTP server port |
+| `PORT` | ❌ | — | Set to enable HTTP/SSE mode (see below) |
 | `LOG_LEVEL` | ❌ | `info` | Log level: `debug`, `info`, `warn`, `error` |
+
+## HTTP/SSE Mode
+
+By default the server communicates over stdio. If you set the `PORT` environment variable, the server starts an HTTP listener on that port instead, exposing:
+
+- **MCP endpoint**: `http://localhost:<PORT>/mcp`
+- **Health endpoint**: `http://localhost:<PORT>/health`
+
+This is useful for remote or shared deployments where the MCP client connects over the network rather than spawning a local process.
 
 ## Tool Reference
 
