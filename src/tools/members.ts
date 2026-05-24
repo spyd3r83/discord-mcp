@@ -27,7 +27,17 @@ const EditMemberSchema = z.object({
 export function registerMemberTools(server: McpServer): void {
   server.registerTool(
     "get_member",
-    { description: "Get a guild member's info", inputSchema: GetMemberSchema },
+    { description: `Get detailed information about a specific member of a Discord guild (server).
+
+Required parameters:
+  • guild_id — Discord guild snowflake ID (17-19 digit integer string, e.g. "1396724253621223584").
+    NOT an OpenButler UUID. Call discord-ext_list_guilds first if you don't know it.
+  • user_id — Discord user snowflake ID (17-19 digit integer string, e.g. "281937542917916673").
+    NOT an OpenButler UUID. Call discord-ext_search_members or discord-ext_list_members first.
+
+Returns: { id, username, nick, roles: string[], joinedAt }
+
+Example: discord-ext_get_member({ guild_id: "1396724253621223584", user_id: "281937542917916673" })`, inputSchema: GetMemberSchema },
     async (args) => {
       const parsed = GetMemberSchema.safeParse(args);
       if (!parsed.success) return zodError(parsed.error.issues);
@@ -54,7 +64,18 @@ export function registerMemberTools(server: McpServer): void {
 
   server.registerTool(
     "list_members",
-    { description: "List members in a guild", inputSchema: ListMembersSchema },
+    { description: `List members of a Discord guild (server).
+
+Required parameters:
+  • guild_id — Discord guild snowflake ID (17-19 digit integer string, e.g. "1396724253621223584").
+    NOT an OpenButler UUID. Call discord-ext_list_guilds first if you don't know it.
+
+Optional:
+  • limit — max members to return (1–1000, default 100)
+
+Returns: [{ id, username, nick }]
+
+Example: discord-ext_list_members({ guild_id: "1396724253621223584", limit: 50 })`, inputSchema: ListMembersSchema },
     async (args) => {
       const parsed = ListMembersSchema.safeParse(args);
       if (!parsed.success) return zodError(parsed.error.issues);
@@ -71,7 +92,19 @@ export function registerMemberTools(server: McpServer): void {
 
   server.registerTool(
     "search_members",
-    { description: "Search members by username", inputSchema: SearchMembersSchema },
+    { description: `Search for members in a Discord guild by username or nickname.
+
+Required parameters:
+  • guild_id — Discord guild snowflake ID (17-19 digit integer string, e.g. "1396724253621223584").
+    NOT an OpenButler UUID. Call discord-ext_list_guilds first if you don't know it.
+  • query — search string to match against usernames/nicknames (e.g. "jessica")
+
+Optional:
+  • limit — max results to return (1–100, default 10)
+
+Returns: [{ id, username, nick }]
+
+Example: discord-ext_search_members({ guild_id: "1396724253621223584", query: "jessica", limit: 5 })`, inputSchema: SearchMembersSchema },
     async (args) => {
       const parsed = SearchMembersSchema.safeParse(args);
       if (!parsed.success) return zodError(parsed.error.issues);
@@ -88,7 +121,22 @@ export function registerMemberTools(server: McpServer): void {
 
   server.registerTool(
     "edit_member",
-    { description: "Edit a guild member", inputSchema: EditMemberSchema },
+    { description: `Edit a member's properties in a Discord guild (nickname, mute, deaf).
+
+Required parameters:
+  • guild_id — Discord guild snowflake ID (17-19 digit integer string, e.g. "1396724253621223584").
+    NOT an OpenButler UUID. Call discord-ext_list_guilds first if you don't know it.
+  • user_id — Discord user snowflake ID (17-19 digit integer string, e.g. "281937542917916673").
+    NOT an OpenButler UUID. Call discord-ext_search_members or discord-ext_list_members first.
+
+Optional:
+  • nick — new nickname string (set to null to clear)
+  • mute — server-mute the member (boolean, requires Manage Channels permission)
+  • deaf — server-deafen the member (boolean, requires Manage Channels permission)
+
+Returns: "Member updated"
+
+Example: discord-ext_edit_member({ guild_id: "1396724253621223584", user_id: "281937542917916673", nick: "New Nick" })`, inputSchema: EditMemberSchema },
     async (args) => {
       const parsed = EditMemberSchema.safeParse(args);
       if (!parsed.success) return zodError(parsed.error.issues);

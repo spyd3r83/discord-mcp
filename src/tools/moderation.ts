@@ -35,7 +35,21 @@ const ListBansSchema = z.object({
 export function registerModerationTools(server: McpServer): void {
   server.registerTool(
     "ban_member",
-    { description: "Ban a user from a guild", inputSchema: BanSchema },
+    { description: `Ban a user from a Discord guild (server). Removes the user and prevents them from rejoining.
+
+Required parameters:
+  • guild_id — Discord guild snowflake ID (17-19 digit integer string, e.g. "1396724253621223584").
+    NOT an OpenButler UUID. Call discord-ext_list_guilds first if you don't know it.
+  • user_id — Discord user snowflake ID (17-19 digit integer string, e.g. "281937542917916673").
+    NOT an OpenButler UUID.
+
+Optional:
+  • reason — audit-log reason string for the ban (max 512 characters)
+  • delete_message_days — delete the user's recent messages (0–7 days, default 0)
+
+Returns: "User banned"
+
+Example: discord-ext_ban_member({ guild_id: "1396724253621223584", user_id: "281937542917916673", reason: "Spam", delete_message_days: 1 })`, inputSchema: BanSchema },
     async (args) => {
       const parsed = BanSchema.safeParse(args);
       if (!parsed.success) return zodError(parsed.error.issues);
@@ -54,7 +68,17 @@ export function registerModerationTools(server: McpServer): void {
 
   server.registerTool(
     "unban_member",
-    { description: "Unban a user from a guild", inputSchema: UnbanSchema },
+    { description: `Unban a previously banned user from a Discord guild (server). Allows them to rejoin.
+
+Required parameters:
+  • guild_id — Discord guild snowflake ID (17-19 digit integer string, e.g. "1396724253621223584").
+    NOT an OpenButler UUID. Call discord-ext_list_guilds first if you don't know it.
+  • user_id — Discord user snowflake ID (17-19 digit integer string, e.g. "281937542917916673").
+    NOT an OpenButler UUID. Call discord-ext_list_bans first if you don't know it.
+
+Returns: "User unbanned"
+
+Example: discord-ext_unban_member({ guild_id: "1396724253621223584", user_id: "281937542917916673" })`, inputSchema: UnbanSchema },
     async (args) => {
       const parsed = UnbanSchema.safeParse(args);
       if (!parsed.success) return zodError(parsed.error.issues);
@@ -70,7 +94,20 @@ export function registerModerationTools(server: McpServer): void {
 
   server.registerTool(
     "kick_member",
-    { description: "Kick a user from a guild", inputSchema: KickSchema },
+    { description: `Kick a user from a Discord guild (server). They can rejoin with an invite.
+
+Required parameters:
+  • guild_id — Discord guild snowflake ID (17-19 digit integer string, e.g. "1396724253621223584").
+    NOT an OpenButler UUID. Call discord-ext_list_guilds first if you don't know it.
+  • user_id — Discord user snowflake ID (17-19 digit integer string, e.g. "281937542917916673").
+    NOT an OpenButler UUID. Call discord-ext_search_members first.
+
+Optional:
+  • reason — audit-log reason string for the kick (max 512 characters)
+
+Returns: "User kicked"
+
+Example: discord-ext_kick_member({ guild_id: "1396724253621223584", user_id: "281937542917916673", reason: "Disruptive behavior" })`, inputSchema: KickSchema },
     async (args) => {
       const parsed = KickSchema.safeParse(args);
       if (!parsed.success) return zodError(parsed.error.issues);
@@ -87,7 +124,21 @@ export function registerModerationTools(server: McpServer): void {
 
   server.registerTool(
     "timeout_member",
-    { description: "Timeout a user", inputSchema: TimeoutSchema },
+    { description: `Timeout (mute) a user in a Discord guild for a specified duration. They cannot send messages or join voice channels during the timeout.
+
+Required parameters:
+  • guild_id — Discord guild snowflake ID (17-19 digit integer string, e.g. "1396724253621223584").
+    NOT an OpenButler UUID. Call discord-ext_list_guilds first if you don't know it.
+  • user_id — Discord user snowflake ID (17-19 digit integer string, e.g. "281937542917916673").
+    NOT an OpenButler UUID. Call discord-ext_search_members first.
+  • duration_minutes — timeout length in minutes (1–40320, max 28 days)
+
+Optional:
+  • reason — audit-log reason string for the timeout (max 512 characters)
+
+Returns: "User timed out"
+
+Example: discord-ext_timeout_member({ guild_id: "1396724253621223584", user_id: "281937542917916673", duration_minutes: 60, reason: "Cool down" })`, inputSchema: TimeoutSchema },
     async (args) => {
       const parsed = TimeoutSchema.safeParse(args);
       if (!parsed.success) return zodError(parsed.error.issues);
@@ -105,7 +156,17 @@ export function registerModerationTools(server: McpServer): void {
 
   server.registerTool(
     "remove_timeout",
-    { description: "Remove a timeout from a user", inputSchema: RemoveTimeoutSchema },
+    { description: `Remove an active timeout from a Discord guild member, allowing them to send messages and join voice again.
+
+Required parameters:
+  • guild_id — Discord guild snowflake ID (17-19 digit integer string, e.g. "1396724253621223584").
+    NOT an OpenButler UUID. Call discord-ext_list_guilds first if you don't know it.
+  • user_id — Discord user snowflake ID (17-19 digit integer string, e.g. "281937542917916673").
+    NOT an OpenButler UUID.
+
+Returns: "Timeout removed"
+
+Example: discord-ext_remove_timeout({ guild_id: "1396724253621223584", user_id: "281937542917916673" })`, inputSchema: RemoveTimeoutSchema },
     async (args) => {
       const parsed = RemoveTimeoutSchema.safeParse(args);
       if (!parsed.success) return zodError(parsed.error.issues);
@@ -122,7 +183,18 @@ export function registerModerationTools(server: McpServer): void {
 
   server.registerTool(
     "list_bans",
-    { description: "List bans in a guild", inputSchema: ListBansSchema },
+    { description: `List banned users in a Discord guild (server).
+
+Required parameters:
+  • guild_id — Discord guild snowflake ID (17-19 digit integer string, e.g. "1396724253621223584").
+    NOT an OpenButler UUID. Call discord-ext_list_guilds first if you don't know it.
+
+Optional:
+  • limit — max bans to return (1–1000, default 100)
+
+Returns: [{ userId, username, reason }]
+
+Example: discord-ext_list_bans({ guild_id: "1396724253621223584", limit: 25 })`, inputSchema: ListBansSchema },
     async (args) => {
       const parsed = ListBansSchema.safeParse(args);
       if (!parsed.success) return zodError(parsed.error.issues);

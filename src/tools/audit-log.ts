@@ -13,7 +13,21 @@ const GetAuditLogSchema = z.object({
 export function registerAuditLogTools(server: McpServer): void {
   server.registerTool(
     "get_audit_log",
-    { description: "Fetch guild audit log entries", inputSchema: GetAuditLogSchema },
+    { description: `Fetch audit log entries from a Discord guild. Shows moderator actions like bans, kicks, role changes, channel edits, etc.
+
+Required parameters:
+  • guild_id — Discord guild snowflake ID (17-19 digit integer string, e.g. "1396724253621223584").
+    NOT an OpenButler UUID. Call discord-ext_list_guilds first if you don't know it.
+
+Optional:
+  • action_type — Discord audit log action type number to filter by (e.g. 22 = MEMBER_BAN, 20 = MEMBER_KICK). See Discord docs for full list.
+  • user_id — Discord user snowflake ID to filter entries by executor (17-19 digit integer string).
+    NOT an OpenButler UUID.
+  • limit — max entries to return (1–100, default 50)
+
+Returns: [{ id, action, executorId, targetId, reason, createdAt }]
+
+Example: discord-ext_get_audit_log({ guild_id: "1396724253621223584", action_type: 22, limit: 10 })`, inputSchema: GetAuditLogSchema },
     async (args) => {
       const parsed = GetAuditLogSchema.safeParse(args);
       if (!parsed.success) return zodError(parsed.error.issues);

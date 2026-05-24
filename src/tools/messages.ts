@@ -55,8 +55,22 @@ export function registerMessageTools(server: McpServer): void {
   server.registerTool(
     "send_message",
     {
-      description: "Send a text message to a Discord channel",
-      inputSchema: SendMessageSchema,
+      description: `Send a plain text message to a Discord channel.
+
+Required parameters:
+  • channel_id — Discord channel snowflake ID (17-19 digit integer string, e.g. "1397109398337224736").
+    This is NOT an OpenButler channel UUID (like "bcdf5931-..."). These are completely different IDs.
+    If you only know the channel name (e.g. "#sportsnews"), call discord-ext_list_channels first
+    to look up its snowflake ID from the guild.
+  • content — the message text to send (max 2000 characters)
+
+Optional:
+  • reply_to_id — snowflake ID of a message to reply to (creates a threaded reply)
+
+Returns the sent message's snowflake id and content.
+
+Example:
+  discord-ext_send_message({ channel_id: "1397109398337224736", content: "Hello!" })`,
     },
     async (args) => {
       const parsed = SendMessageSchema.safeParse(args);
@@ -78,8 +92,15 @@ export function registerMessageTools(server: McpServer): void {
   server.registerTool(
     "edit_message",
     {
-      description: "Edit an existing message",
-      inputSchema: EditMessageSchema,
+      description: `Edit the content of an existing Discord message (only messages sent by the bot can be edited).
+
+Required parameters:
+  • channel_id — Discord channel snowflake ID (17-19 digit number, e.g. "1397109398337224736").
+    NOT an OpenButler channel UUID. Use discord-ext_list_channels to find a channel snowflake by name.
+  • message_id — Discord message snowflake ID to edit
+  • content — new message text
+
+Returns updated message id and content.`,
     },
     async (args) => {
       const parsed = EditMessageSchema.safeParse(args);
@@ -99,8 +120,14 @@ export function registerMessageTools(server: McpServer): void {
   server.registerTool(
     "delete_message",
     {
-      description: "Delete a message",
-      inputSchema: DeleteMessageSchema,
+      description: `Delete a Discord message from a channel.
+
+Required parameters:
+  • channel_id — Discord channel snowflake ID (17-19 digit number, e.g. "1397109398337224736").
+    NOT an OpenButler channel UUID.
+  • message_id — Discord message snowflake ID to delete
+
+Deletion is permanent. The bot must have Manage Messages permission to delete others' messages.`,
     },
     async (args) => {
       const parsed = DeleteMessageSchema.safeParse(args);
@@ -120,8 +147,14 @@ export function registerMessageTools(server: McpServer): void {
   server.registerTool(
     "get_message",
     {
-      description: "Fetch a single message",
-      inputSchema: GetMessageSchema,
+      description: `Fetch a single Discord message by its snowflake ID.
+
+Required parameters:
+  • channel_id — Discord channel snowflake ID (17-19 digit number, e.g. "1397109398337224736").
+    NOT an OpenButler channel UUID. Use discord-ext_list_channels to look up channel snowflakes by name.
+  • message_id — Discord message snowflake ID
+
+Returns: { id, content, author (tag), timestamp }`,
     },
     async (args) => {
       const parsed = GetMessageSchema.safeParse(args);
@@ -145,8 +178,23 @@ export function registerMessageTools(server: McpServer): void {
   server.registerTool(
     "list_messages",
     {
-      description: "Fetch recent messages from a channel",
-      inputSchema: ListMessagesSchema,
+      description: `Fetch recent messages from a Discord channel.
+
+Required parameter:
+  • channel_id — Discord channel snowflake ID (17-19 digit integer string, e.g. "1397109398337224736").
+    This is a Discord snowflake, NOT an OpenButler channel UUID (like "bcdf5931-...").
+    If you received a message from the user, their conversationId in the context block is already the Discord channel snowflake — use it directly.
+    If you only know the channel name, call discord-ext_list_channels first to find the snowflake.
+
+Optional parameters:
+  • limit — number of messages to return (1–100, default: recent messages)
+  • before — return messages before this message snowflake ID (for pagination)
+  • after — return messages after this message snowflake ID (for pagination)
+
+Returns an array of { id, content, author } objects, newest first.
+
+Example:
+  discord-ext_list_messages({ channel_id: "1471337835444310187", limit: 20 })`,
     },
     async (args) => {
       const parsed = ListMessagesSchema.safeParse(args);
@@ -170,8 +218,13 @@ export function registerMessageTools(server: McpServer): void {
   server.registerTool(
     "pin_message",
     {
-      description: "Pin a message in a channel",
-      inputSchema: PinMessageSchema,
+      description: `Pin a Discord message in a channel so it appears in the channel's pinned messages list.
+
+Required parameters:
+  • channel_id — Discord channel snowflake ID (17-19 digits, e.g. "1397109398337224736"). NOT an OpenButler channel UUID.
+  • message_id — Discord message snowflake ID to pin
+
+The bot must have Manage Messages permission.`,
     },
     async (args) => {
       const parsed = PinMessageSchema.safeParse(args);
@@ -191,8 +244,13 @@ export function registerMessageTools(server: McpServer): void {
   server.registerTool(
     "unpin_message",
     {
-      description: "Unpin a message in a channel",
-      inputSchema: PinMessageSchema,
+      description: `Unpin a previously pinned Discord message from a channel.
+
+Required parameters:
+  • channel_id — Discord channel snowflake ID (17-19 digits, e.g. "1397109398337224736"). NOT an OpenButler channel UUID.
+  • message_id — Discord message snowflake ID to unpin
+
+The bot must have Manage Messages permission.`,
     },
     async (args) => {
       const parsed = PinMessageSchema.safeParse(args);
@@ -212,8 +270,22 @@ export function registerMessageTools(server: McpServer): void {
   server.registerTool(
     "send_embed",
     {
-      description: "Send an embed message to a channel",
-      inputSchema: SendEmbedSchema,
+      description: `Send a rich embed message (with title, description, fields, color, image, etc.) to a Discord channel.
+
+Required parameter:
+  • channel_id — Discord channel snowflake ID (17-19 digit number, e.g. "1397109398337224736").
+    NOT an OpenButler channel UUID. Use discord-ext_list_channels to find the snowflake by channel name.
+
+Optional embed fields (at least one should be set to make a useful embed):
+  • title — embed title (bold header)
+  • description — embed body text (supports markdown)
+  • color — integer color value (e.g. 0x00ff00 for green, 0xff0000 for red)
+  • fields — array of { name, value, inline? } objects for structured data
+  • url — URL to hyperlink the title
+  • image_url — URL of an image to display in the embed
+  • footer — small footer text
+
+Returns the sent message's snowflake id.`,
     },
     async (args) => {
       const parsed = SendEmbedSchema.safeParse(args);

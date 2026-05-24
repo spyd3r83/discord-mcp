@@ -34,7 +34,15 @@ const SendWebhookMessageSchema = z.object({
 export function registerWebhookTools(server: McpServer): void {
   server.registerTool(
     "list_webhooks",
-    { description: "List webhooks in a channel", inputSchema: ListWebhooksSchema },
+    { description: `List all webhooks in a Discord channel.
+
+Required parameters:
+  • channel_id — Discord channel snowflake ID (17-19 digit integer string, e.g. "1396725483621223584").
+    NOT an OpenButler UUID. Call discord-ext_list_channels first if you don't know it.
+
+Returns: [{ id, name, url }]
+
+Example: discord-ext_list_webhooks({ channel_id: "1396725483621223584" })`, inputSchema: ListWebhooksSchema },
     async (args) => {
       const parsed = ListWebhooksSchema.safeParse(args);
       if (!parsed.success) return zodError(parsed.error.issues);
@@ -52,7 +60,19 @@ export function registerWebhookTools(server: McpServer): void {
 
   server.registerTool(
     "create_webhook",
-    { description: "Create a webhook in a channel", inputSchema: CreateWebhookSchema },
+    { description: `Create a new webhook in a Discord channel. Webhooks can send messages with a custom name and avatar.
+
+Required parameters:
+  • channel_id — Discord channel snowflake ID (17-19 digit integer string, e.g. "1396725483621223584").
+    NOT an OpenButler UUID. Call discord-ext_list_channels first if you don't know it.
+  • name — name for the webhook (e.g. "Announcements")
+
+Optional:
+  • avatar_url — URL for the webhook avatar image
+
+Returns: { id, name, token }
+
+Example: discord-ext_create_webhook({ channel_id: "1396725483621223584", name: "Announcements" })`, inputSchema: CreateWebhookSchema },
     async (args) => {
       const parsed = CreateWebhookSchema.safeParse(args);
       if (!parsed.success) return zodError(parsed.error.issues);
@@ -72,7 +92,15 @@ export function registerWebhookTools(server: McpServer): void {
 
   server.registerTool(
     "delete_webhook",
-    { description: "Delete a webhook", inputSchema: DeleteWebhookSchema },
+    { description: `Delete a Discord webhook.
+
+Required parameters:
+  • webhook_id — Discord webhook snowflake ID (17-19 digit integer string, e.g. "1396726000621223584").
+    NOT an OpenButler UUID. Call discord-ext_list_webhooks first if you don't know it.
+
+Returns: "Webhook deleted"
+
+Example: discord-ext_delete_webhook({ webhook_id: "1396726000621223584" })`, inputSchema: DeleteWebhookSchema },
     async (args) => {
       const parsed = DeleteWebhookSchema.safeParse(args);
       if (!parsed.success) return zodError(parsed.error.issues);
@@ -88,7 +116,22 @@ export function registerWebhookTools(server: McpServer): void {
 
   server.registerTool(
     "send_webhook_message",
-    { description: "Send a message via webhook", inputSchema: SendWebhookMessageSchema },
+    { description: `Send a message through a Discord webhook with optional custom username, avatar, and embeds.
+
+Required parameters:
+  • webhook_id — Discord webhook snowflake ID (17-19 digit integer string, e.g. "1396726000621223584").
+    NOT an OpenButler UUID. Call discord-ext_list_webhooks first if you don't know it.
+  • webhook_token — webhook token string (returned by discord-ext_create_webhook or discord-ext_list_webhooks)
+  • content — message text to send
+
+Optional:
+  • username — override the webhook's default name for this message
+  • avatar_url — override the webhook's default avatar for this message
+  • embeds — array of embed objects, each with optional title, description, color fields
+
+Returns: { id }
+
+Example: discord-ext_send_webhook_message({ webhook_id: "1396726000621223584", webhook_token: "abc123xyz", content: "Deploy complete!", username: "CI Bot" })`, inputSchema: SendWebhookMessageSchema },
     async (args) => {
       const parsed = SendWebhookMessageSchema.safeParse(args);
       if (!parsed.success) return zodError(parsed.error.issues);

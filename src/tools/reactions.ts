@@ -37,7 +37,18 @@ async function fetchMessage(channelId: string, messageId: string) {
 export function registerReactionTools(server: McpServer): void {
   server.registerTool(
     "add_reaction",
-    { description: "Add a reaction to a message", inputSchema: ReactionSchema },
+    { description: `Add an emoji reaction to a Discord message.
+
+Required parameters:
+  • channel_id — Discord channel snowflake ID (17-19 digit integer string, e.g. "1396725483621223584").
+    NOT an OpenButler UUID. Call discord-ext_list_channels first if you don't know it.
+  • message_id — Discord message snowflake ID (17-19 digit integer string, e.g. "1396730001621223584").
+    NOT an OpenButler UUID. Call discord-ext_list_messages first.
+  • emoji — emoji to react with. Use Unicode emoji (e.g. "👍") or a custom emoji in the format "emojiName:emojiId" (e.g. "party:123456789012345678").
+
+Returns: "Reaction added"
+
+Example: discord-ext_add_reaction({ channel_id: "1396725483621223584", message_id: "1396730001621223584", emoji: "👍" })`, inputSchema: ReactionSchema },
     async (args) => {
       const parsed = ReactionSchema.safeParse(args);
       if (!parsed.success) return zodError(parsed.error.issues);
@@ -54,7 +65,18 @@ export function registerReactionTools(server: McpServer): void {
 
   server.registerTool(
     "remove_reaction",
-    { description: "Remove the bot's reaction from a message", inputSchema: ReactionSchema },
+    { description: `Remove the bot's own emoji reaction from a Discord message. Only removes the bot's reaction, not other users'.
+
+Required parameters:
+  • channel_id — Discord channel snowflake ID (17-19 digit integer string, e.g. "1396725483621223584").
+    NOT an OpenButler UUID. Call discord-ext_list_channels first if you don't know it.
+  • message_id — Discord message snowflake ID (17-19 digit integer string, e.g. "1396730001621223584").
+    NOT an OpenButler UUID.
+  • emoji — the emoji string to remove (must match the exact emoji previously added, e.g. "👍")
+
+Returns: "Reaction removed"
+
+Example: discord-ext_remove_reaction({ channel_id: "1396725483621223584", message_id: "1396730001621223584", emoji: "👍" })`, inputSchema: ReactionSchema },
     async (args) => {
       const parsed = ReactionSchema.safeParse(args);
       if (!parsed.success) return zodError(parsed.error.issues);
@@ -71,7 +93,20 @@ export function registerReactionTools(server: McpServer): void {
 
   server.registerTool(
     "remove_user_reaction",
-    { description: "Remove a specific user's reaction", inputSchema: RemoveUserReactionSchema },
+    { description: `Remove a specific user's emoji reaction from a Discord message. Requires the Manage Messages permission.
+
+Required parameters:
+  • channel_id — Discord channel snowflake ID (17-19 digit integer string, e.g. "1396725483621223584").
+    NOT an OpenButler UUID. Call discord-ext_list_channels first if you don't know it.
+  • message_id — Discord message snowflake ID (17-19 digit integer string, e.g. "1396730001621223584").
+    NOT an OpenButler UUID.
+  • emoji — the emoji string to remove (e.g. "👍")
+  • user_id — Discord user snowflake ID whose reaction to remove (17-19 digit integer string, e.g. "281937542917916673").
+    NOT an OpenButler UUID.
+
+Returns: "User reaction removed"
+
+Example: discord-ext_remove_user_reaction({ channel_id: "1396725483621223584", message_id: "1396730001621223584", emoji: "👍", user_id: "281937542917916673" })`, inputSchema: RemoveUserReactionSchema },
     async (args) => {
       const parsed = RemoveUserReactionSchema.safeParse(args);
       if (!parsed.success) return zodError(parsed.error.issues);
@@ -88,7 +123,21 @@ export function registerReactionTools(server: McpServer): void {
 
   server.registerTool(
     "list_reactions",
-    { description: "List users who reacted with an emoji", inputSchema: ListReactionsSchema },
+    { description: `List users who reacted to a Discord message with a specific emoji.
+
+Required parameters:
+  • channel_id — Discord channel snowflake ID (17-19 digit integer string, e.g. "1396725483621223584").
+    NOT an OpenButler UUID. Call discord-ext_list_channels first if you don't know it.
+  • message_id — Discord message snowflake ID (17-19 digit integer string, e.g. "1396730001621223584").
+    NOT an OpenButler UUID.
+  • emoji — the emoji to look up (e.g. "👍")
+
+Optional:
+  • limit — max users to return (1–100, default 100)
+
+Returns: [{ id, username }]
+
+Example: discord-ext_list_reactions({ channel_id: "1396725483621223584", message_id: "1396730001621223584", emoji: "👍", limit: 25 })`, inputSchema: ListReactionsSchema },
     async (args) => {
       const parsed = ListReactionsSchema.safeParse(args);
       if (!parsed.success) return zodError(parsed.error.issues);
@@ -108,7 +157,17 @@ export function registerReactionTools(server: McpServer): void {
 
   server.registerTool(
     "clear_reactions",
-    { description: "Clear all reactions from a message", inputSchema: ClearReactionsSchema },
+    { description: `Remove all emoji reactions from a Discord message. Requires the Manage Messages permission.
+
+Required parameters:
+  • channel_id — Discord channel snowflake ID (17-19 digit integer string, e.g. "1396725483621223584").
+    NOT an OpenButler UUID. Call discord-ext_list_channels first if you don't know it.
+  • message_id — Discord message snowflake ID (17-19 digit integer string, e.g. "1396730001621223584").
+    NOT an OpenButler UUID.
+
+Returns: "All reactions cleared"
+
+Example: discord-ext_clear_reactions({ channel_id: "1396725483621223584", message_id: "1396730001621223584" })`, inputSchema: ClearReactionsSchema },
     async (args) => {
       const parsed = ClearReactionsSchema.safeParse(args);
       if (!parsed.success) return zodError(parsed.error.issues);
