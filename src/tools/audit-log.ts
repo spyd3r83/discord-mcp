@@ -17,12 +17,12 @@ export function registerAuditLogTools(server: McpServer): void {
 
 Required parameters:
   • guild_id — Discord guild snowflake ID (17-19 digit integer string, e.g. "1396724253621223584").
-    NOT an OpenButler UUID. Call discord-ext_list_guilds first if you don't know it.
+    NOT a non-Discord UUID. Call discord-ext_list_guilds first if you don't know it.
 
 Optional:
   • action_type — Discord audit log action type number to filter by (e.g. 22 = MEMBER_BAN, 20 = MEMBER_KICK). See Discord docs for full list.
   • user_id — Discord user snowflake ID to filter entries by executor (17-19 digit integer string).
-    NOT an OpenButler UUID.
+    NOT a non-Discord UUID.
   • limit — max entries to return (1–100, default 50)
 
 Returns: [{ id, action, executorId, targetId, reason, createdAt }]

@@ -23,7 +23,7 @@ export function registerForumTools(server: McpServer): void {
 
 Required parameter:
   • channel_id — Discord snowflake ID of the forum channel (17-19 digit integer string).
-    Must be a ChannelType 15 (GuildForum) channel. NOT an OpenButler channel UUID.
+    Must be a ChannelType 15 (GuildForum) channel. NOT a non-Discord channel UUID.
     Call discord-ext_list_channels with type=15 to find forum channel snowflakes by name.
 
 Returns: [{ id, name, archived }] — active forum thread posts.`,
@@ -52,7 +52,7 @@ Returns: [{ id, name, archived }] — active forum thread posts.`,
 
 Required parameters:
   • channel_id — Discord snowflake ID of the forum channel (17-19 digit integer, ChannelType 15).
-    NOT an OpenButler channel UUID. Use discord-ext_list_channels with type=15 to find it.
+    NOT a non-Discord channel UUID. Use discord-ext_list_channels with type=15 to find it.
   • name — title of the forum post
   • content — body text of the opening message
 

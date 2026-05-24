@@ -18,7 +18,7 @@ export function registerDMTools(server: McpServer): void {
 
 Required parameters:
   • user_id — Discord user snowflake ID (17-19 digit integer string, e.g. "123456789012345678").
-    This is the user's Discord account ID, NOT a channel ID or OpenButler UUID.
+    This is the user's Discord account ID, NOT a channel ID or non-Discord UUID.
     If you only know a username, call discord-ext_search_members or discord-ext_get_member to find the snowflake.
   • content — message text to send (max 2000 characters)
 
@@ -49,7 +49,7 @@ Example: discord-ext_send_dm({ user_id: "123456789012345678", content: "Hello fr
 
 Required parameter:
   • user_id — Discord user snowflake ID (17-19 digit integer string, e.g. "123456789012345678").
-    NOT an OpenButler agent/user ID — this is a Discord account snowflake.
+    NOT a non-Discord agent/user ID — this is a Discord account snowflake.
 
 Returns: { id, username, discriminator, bot }
 

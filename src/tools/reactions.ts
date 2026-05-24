@@ -41,9 +41,9 @@ export function registerReactionTools(server: McpServer): void {
 
 Required parameters:
   • channel_id — Discord channel snowflake ID (17-19 digit integer string, e.g. "1396725483621223584").
-    NOT an OpenButler UUID. Call discord-ext_list_channels first if you don't know it.
+    NOT a non-Discord UUID. Call discord-ext_list_channels first if you don't know it.
   • message_id — Discord message snowflake ID (17-19 digit integer string, e.g. "1396730001621223584").
-    NOT an OpenButler UUID. Call discord-ext_list_messages first.
+    NOT a non-Discord UUID. Call discord-ext_list_messages first.
   • emoji — emoji to react with. Use Unicode emoji (e.g. "👍") or a custom emoji in the format "emojiName:emojiId" (e.g. "party:123456789012345678").
 
 Returns: "Reaction added"
@@ -69,9 +69,9 @@ Example: discord-ext_add_reaction({ channel_id: "1396725483621223584", message_i
 
 Required parameters:
   • channel_id — Discord channel snowflake ID (17-19 digit integer string, e.g. "1396725483621223584").
-    NOT an OpenButler UUID. Call discord-ext_list_channels first if you don't know it.
+    NOT a non-Discord UUID. Call discord-ext_list_channels first if you don't know it.
   • message_id — Discord message snowflake ID (17-19 digit integer string, e.g. "1396730001621223584").
-    NOT an OpenButler UUID.
+    NOT a non-Discord UUID.
   • emoji — the emoji string to remove (must match the exact emoji previously added, e.g. "👍")
 
 Returns: "Reaction removed"
@@ -97,12 +97,12 @@ Example: discord-ext_remove_reaction({ channel_id: "1396725483621223584", messag
 
 Required parameters:
   • channel_id — Discord channel snowflake ID (17-19 digit integer string, e.g. "1396725483621223584").
-    NOT an OpenButler UUID. Call discord-ext_list_channels first if you don't know it.
+    NOT a non-Discord UUID. Call discord-ext_list_channels first if you don't know it.
   • message_id — Discord message snowflake ID (17-19 digit integer string, e.g. "1396730001621223584").
-    NOT an OpenButler UUID.
+    NOT a non-Discord UUID.
   • emoji — the emoji string to remove (e.g. "👍")
   • user_id — Discord user snowflake ID whose reaction to remove (17-19 digit integer string, e.g. "281937542917916673").
-    NOT an OpenButler UUID.
+    NOT a non-Discord UUID.
 
 Returns: "User reaction removed"
 
@@ -127,9 +127,9 @@ Example: discord-ext_remove_user_reaction({ channel_id: "1396725483621223584", m
 
 Required parameters:
   • channel_id — Discord channel snowflake ID (17-19 digit integer string, e.g. "1396725483621223584").
-    NOT an OpenButler UUID. Call discord-ext_list_channels first if you don't know it.
+    NOT a non-Discord UUID. Call discord-ext_list_channels first if you don't know it.
   • message_id — Discord message snowflake ID (17-19 digit integer string, e.g. "1396730001621223584").
-    NOT an OpenButler UUID.
+    NOT a non-Discord UUID.
   • emoji — the emoji to look up (e.g. "👍")
 
 Optional:
@@ -161,9 +161,9 @@ Example: discord-ext_list_reactions({ channel_id: "1396725483621223584", message
 
 Required parameters:
   • channel_id — Discord channel snowflake ID (17-19 digit integer string, e.g. "1396725483621223584").
-    NOT an OpenButler UUID. Call discord-ext_list_channels first if you don't know it.
+    NOT a non-Discord UUID. Call discord-ext_list_channels first if you don't know it.
   • message_id — Discord message snowflake ID (17-19 digit integer string, e.g. "1396730001621223584").
-    NOT an OpenButler UUID.
+    NOT a non-Discord UUID.
 
 Returns: "All reactions cleared"
 

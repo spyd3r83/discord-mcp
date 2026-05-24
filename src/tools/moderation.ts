@@ -39,9 +39,9 @@ export function registerModerationTools(server: McpServer): void {
 
 Required parameters:
   • guild_id — Discord guild snowflake ID (17-19 digit integer string, e.g. "1396724253621223584").
-    NOT an OpenButler UUID. Call discord-ext_list_guilds first if you don't know it.
+    NOT a non-Discord UUID. Call discord-ext_list_guilds first if you don't know it.
   • user_id — Discord user snowflake ID (17-19 digit integer string, e.g. "281937542917916673").
-    NOT an OpenButler UUID.
+    NOT a non-Discord UUID.
 
 Optional:
   • reason — audit-log reason string for the ban (max 512 characters)
@@ -72,9 +72,9 @@ Example: discord-ext_ban_member({ guild_id: "1396724253621223584", user_id: "281
 
 Required parameters:
   • guild_id — Discord guild snowflake ID (17-19 digit integer string, e.g. "1396724253621223584").
-    NOT an OpenButler UUID. Call discord-ext_list_guilds first if you don't know it.
+    NOT a non-Discord UUID. Call discord-ext_list_guilds first if you don't know it.
   • user_id — Discord user snowflake ID (17-19 digit integer string, e.g. "281937542917916673").
-    NOT an OpenButler UUID. Call discord-ext_list_bans first if you don't know it.
+    NOT a non-Discord UUID. Call discord-ext_list_bans first if you don't know it.
 
 Returns: "User unbanned"
 
@@ -98,9 +98,9 @@ Example: discord-ext_unban_member({ guild_id: "1396724253621223584", user_id: "2
 
 Required parameters:
   • guild_id — Discord guild snowflake ID (17-19 digit integer string, e.g. "1396724253621223584").
-    NOT an OpenButler UUID. Call discord-ext_list_guilds first if you don't know it.
+    NOT a non-Discord UUID. Call discord-ext_list_guilds first if you don't know it.
   • user_id — Discord user snowflake ID (17-19 digit integer string, e.g. "281937542917916673").
-    NOT an OpenButler UUID. Call discord-ext_search_members first.
+    NOT a non-Discord UUID. Call discord-ext_search_members first.
 
 Optional:
   • reason — audit-log reason string for the kick (max 512 characters)
@@ -128,9 +128,9 @@ Example: discord-ext_kick_member({ guild_id: "1396724253621223584", user_id: "28
 
 Required parameters:
   • guild_id — Discord guild snowflake ID (17-19 digit integer string, e.g. "1396724253621223584").
-    NOT an OpenButler UUID. Call discord-ext_list_guilds first if you don't know it.
+    NOT a non-Discord UUID. Call discord-ext_list_guilds first if you don't know it.
   • user_id — Discord user snowflake ID (17-19 digit integer string, e.g. "281937542917916673").
-    NOT an OpenButler UUID. Call discord-ext_search_members first.
+    NOT a non-Discord UUID. Call discord-ext_search_members first.
   • duration_minutes — timeout length in minutes (1–40320, max 28 days)
 
 Optional:
@@ -160,9 +160,9 @@ Example: discord-ext_timeout_member({ guild_id: "1396724253621223584", user_id: 
 
 Required parameters:
   • guild_id — Discord guild snowflake ID (17-19 digit integer string, e.g. "1396724253621223584").
-    NOT an OpenButler UUID. Call discord-ext_list_guilds first if you don't know it.
+    NOT a non-Discord UUID. Call discord-ext_list_guilds first if you don't know it.
   • user_id — Discord user snowflake ID (17-19 digit integer string, e.g. "281937542917916673").
-    NOT an OpenButler UUID.
+    NOT a non-Discord UUID.
 
 Returns: "Timeout removed"
 
@@ -187,7 +187,7 @@ Example: discord-ext_remove_timeout({ guild_id: "1396724253621223584", user_id: 
 
 Required parameters:
   • guild_id — Discord guild snowflake ID (17-19 digit integer string, e.g. "1396724253621223584").
-    NOT an OpenButler UUID. Call discord-ext_list_guilds first if you don't know it.
+    NOT a non-Discord UUID. Call discord-ext_list_guilds first if you don't know it.
 
 Optional:
   • limit — max bans to return (1–1000, default 100)

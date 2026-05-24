@@ -59,7 +59,7 @@ export function registerMessageTools(server: McpServer): void {
 
 Required parameters:
   • channel_id — Discord channel snowflake ID (17-19 digit integer string, e.g. "1397109398337224736").
-    This is NOT an OpenButler channel UUID (like "bcdf5931-..."). These are completely different IDs.
+    This is NOT a non-Discord channel UUID (like "bcdf5931-..."). These are completely different IDs.
     If you only know the channel name (e.g. "#sportsnews"), call discord-ext_list_channels first
     to look up its snowflake ID from the guild.
   • content — the message text to send (max 2000 characters)
@@ -97,7 +97,7 @@ Example:
 
 Required parameters:
   • channel_id — Discord channel snowflake ID (17-19 digit number, e.g. "1397109398337224736").
-    NOT an OpenButler channel UUID. Use discord-ext_list_channels to find a channel snowflake by name.
+    NOT a non-Discord channel UUID. Use discord-ext_list_channels to find a channel snowflake by name.
   • message_id — Discord message snowflake ID to edit
   • content — new message text
 
@@ -126,7 +126,7 @@ Returns updated message id and content.`,
 
 Required parameters:
   • channel_id — Discord channel snowflake ID (17-19 digit number, e.g. "1397109398337224736").
-    NOT an OpenButler channel UUID.
+    NOT a non-Discord channel UUID.
   • message_id — Discord message snowflake ID to delete
 
 Deletion is permanent. The bot must have Manage Messages permission to delete others' messages.`,
@@ -154,7 +154,7 @@ Deletion is permanent. The bot must have Manage Messages permission to delete ot
 
 Required parameters:
   • channel_id — Discord channel snowflake ID (17-19 digit number, e.g. "1397109398337224736").
-    NOT an OpenButler channel UUID. Use discord-ext_list_channels to look up channel snowflakes by name.
+    NOT a non-Discord channel UUID. Use discord-ext_list_channels to look up channel snowflakes by name.
   • message_id — Discord message snowflake ID
 
 Returns: { id, content, author (tag), timestamp }`,
@@ -186,7 +186,7 @@ Returns: { id, content, author (tag), timestamp }`,
 
 Required parameter:
   • channel_id — Discord channel snowflake ID (17-19 digit integer string, e.g. "1397109398337224736").
-    This is a Discord snowflake, NOT an OpenButler channel UUID (like "bcdf5931-...").
+    This is a Discord snowflake, NOT a non-Discord channel UUID (like "bcdf5931-...").
     If you received a message from the user, their conversationId in the context block is already the Discord channel snowflake — use it directly.
     If you only know the channel name, call discord-ext_list_channels first to find the snowflake.
 
@@ -226,7 +226,7 @@ Example:
       description: `Pin a Discord message in a channel so it appears in the channel's pinned messages list.
 
 Required parameters:
-  • channel_id — Discord channel snowflake ID (17-19 digits, e.g. "1397109398337224736"). NOT an OpenButler channel UUID.
+  • channel_id — Discord channel snowflake ID (17-19 digits, e.g. "1397109398337224736"). NOT a non-Discord channel UUID.
   • message_id — Discord message snowflake ID to pin
 
 The bot must have Manage Messages permission.`,
@@ -253,7 +253,7 @@ The bot must have Manage Messages permission.`,
       description: `Unpin a previously pinned Discord message from a channel.
 
 Required parameters:
-  • channel_id — Discord channel snowflake ID (17-19 digits, e.g. "1397109398337224736"). NOT an OpenButler channel UUID.
+  • channel_id — Discord channel snowflake ID (17-19 digits, e.g. "1397109398337224736"). NOT a non-Discord channel UUID.
   • message_id — Discord message snowflake ID to unpin
 
 The bot must have Manage Messages permission.`,
@@ -281,7 +281,7 @@ The bot must have Manage Messages permission.`,
 
 Required parameter:
   • channel_id — Discord channel snowflake ID (17-19 digit number, e.g. "1397109398337224736").
-    NOT an OpenButler channel UUID. Use discord-ext_list_channels to find the snowflake by channel name.
+    NOT a non-Discord channel UUID. Use discord-ext_list_channels to find the snowflake by channel name.
 
 Optional embed fields (at least one should be set to make a useful embed):
   • title — embed title (bold header)

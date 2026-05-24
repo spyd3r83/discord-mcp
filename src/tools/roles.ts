@@ -39,7 +39,7 @@ export function registerRoleTools(server: McpServer): void {
 
 Required parameters:
   • guild_id — Discord guild snowflake ID (17-19 digit integer string, e.g. "1396724253621223584").
-    NOT an OpenButler UUID. Call discord-ext_list_guilds first if you don't know it.
+    NOT a non-Discord UUID. Call discord-ext_list_guilds first if you don't know it.
 
 Returns: [{ id, name, color }]
 
@@ -64,9 +64,9 @@ Example: discord-ext_list_roles({ guild_id: "1396724253621223584" })`, inputSche
 
 Required parameters:
   • guild_id — Discord guild snowflake ID (17-19 digit integer string, e.g. "1396724253621223584").
-    NOT an OpenButler UUID. Call discord-ext_list_guilds first if you don't know it.
+    NOT a non-Discord UUID. Call discord-ext_list_guilds first if you don't know it.
   • role_id — Discord role snowflake ID (17-19 digit integer string, e.g. "1396724253621223800").
-    NOT an OpenButler UUID. Call discord-ext_list_roles first if you don't know it.
+    NOT a non-Discord UUID. Call discord-ext_list_roles first if you don't know it.
 
 Returns: { id, name, color, hoist, mentionable }
 
@@ -91,7 +91,7 @@ Example: discord-ext_get_role({ guild_id: "1396724253621223584", role_id: "13967
 
 Required parameters:
   • guild_id — Discord guild snowflake ID (17-19 digit integer string, e.g. "1396724253621223584").
-    NOT an OpenButler UUID. Call discord-ext_list_guilds first if you don't know it.
+    NOT a non-Discord UUID. Call discord-ext_list_guilds first if you don't know it.
   • name — name for the new role (e.g. "Moderator")
 
 Optional:
@@ -128,9 +128,9 @@ Example: discord-ext_create_role({ guild_id: "1396724253621223584", name: "Moder
 
 Required parameters:
   • guild_id — Discord guild snowflake ID (17-19 digit integer string, e.g. "1396724253621223584").
-    NOT an OpenButler UUID. Call discord-ext_list_guilds first if you don't know it.
+    NOT a non-Discord UUID. Call discord-ext_list_guilds first if you don't know it.
   • role_id — Discord role snowflake ID (17-19 digit integer string, e.g. "1396724253621223800").
-    NOT an OpenButler UUID. Call discord-ext_list_roles first if you don't know it.
+    NOT a non-Discord UUID. Call discord-ext_list_roles first if you don't know it.
 
 Optional:
   • name — new name for the role
@@ -167,9 +167,9 @@ Example: discord-ext_edit_role({ guild_id: "1396724253621223584", role_id: "1396
 
 Required parameters:
   • guild_id — Discord guild snowflake ID (17-19 digit integer string, e.g. "1396724253621223584").
-    NOT an OpenButler UUID. Call discord-ext_list_guilds first if you don't know it.
+    NOT a non-Discord UUID. Call discord-ext_list_guilds first if you don't know it.
   • role_id — Discord role snowflake ID (17-19 digit integer string, e.g. "1396724253621223800").
-    NOT an OpenButler UUID. Call discord-ext_list_roles first if you don't know it.
+    NOT a non-Discord UUID. Call discord-ext_list_roles first if you don't know it.
 
 Returns: "Role deleted"
 
@@ -195,11 +195,11 @@ Example: discord-ext_delete_role({ guild_id: "1396724253621223584", role_id: "13
 
 Required parameters:
   • guild_id — Discord guild snowflake ID (17-19 digit integer string, e.g. "1396724253621223584").
-    NOT an OpenButler UUID. Call discord-ext_list_guilds first if you don't know it.
+    NOT a non-Discord UUID. Call discord-ext_list_guilds first if you don't know it.
   • user_id — Discord user snowflake ID (17-19 digit integer string, e.g. "281937542917916673").
-    NOT an OpenButler UUID. Call discord-ext_search_members first.
+    NOT a non-Discord UUID. Call discord-ext_search_members first.
   • role_id — Discord role snowflake ID (17-19 digit integer string, e.g. "1396724253621223800").
-    NOT an OpenButler UUID. Call discord-ext_list_roles first.
+    NOT a non-Discord UUID. Call discord-ext_list_roles first.
 
 Returns: "Role assigned"
 
@@ -224,11 +224,11 @@ Example: discord-ext_assign_role({ guild_id: "1396724253621223584", user_id: "28
 
 Required parameters:
   • guild_id — Discord guild snowflake ID (17-19 digit integer string, e.g. "1396724253621223584").
-    NOT an OpenButler UUID. Call discord-ext_list_guilds first if you don't know it.
+    NOT a non-Discord UUID. Call discord-ext_list_guilds first if you don't know it.
   • user_id — Discord user snowflake ID (17-19 digit integer string, e.g. "281937542917916673").
-    NOT an OpenButler UUID. Call discord-ext_search_members first.
+    NOT a non-Discord UUID. Call discord-ext_search_members first.
   • role_id — Discord role snowflake ID (17-19 digit integer string, e.g. "1396724253621223800").
-    NOT an OpenButler UUID. Call discord-ext_list_roles first.
+    NOT a non-Discord UUID. Call discord-ext_list_roles first.
 
 Returns: "Role removed"
 

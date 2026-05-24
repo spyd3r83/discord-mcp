@@ -31,9 +31,9 @@ export function registerMemberTools(server: McpServer): void {
 
 Required parameters:
   • guild_id — Discord guild snowflake ID (17-19 digit integer string, e.g. "1396724253621223584").
-    NOT an OpenButler UUID. Call discord-ext_list_guilds first if you don't know it.
+    NOT a non-Discord UUID. Call discord-ext_list_guilds first if you don't know it.
   • user_id — Discord user snowflake ID (17-19 digit integer string, e.g. "281937542917916673").
-    NOT an OpenButler UUID. Call discord-ext_search_members or discord-ext_list_members first.
+    NOT a non-Discord UUID. Call discord-ext_search_members or discord-ext_list_members first.
 
 Returns: { id, username, nick, roles: string[], joinedAt }
 
@@ -68,7 +68,7 @@ Example: discord-ext_get_member({ guild_id: "1396724253621223584", user_id: "281
 
 Required parameters:
   • guild_id — Discord guild snowflake ID (17-19 digit integer string, e.g. "1396724253621223584").
-    NOT an OpenButler UUID. Call discord-ext_list_guilds first if you don't know it.
+    NOT a non-Discord UUID. Call discord-ext_list_guilds first if you don't know it.
 
 Optional:
   • limit — max members to return (1–1000, default 100)
@@ -96,7 +96,7 @@ Example: discord-ext_list_members({ guild_id: "1396724253621223584", limit: 50 }
 
 Required parameters:
   • guild_id — Discord guild snowflake ID (17-19 digit integer string, e.g. "1396724253621223584").
-    NOT an OpenButler UUID. Call discord-ext_list_guilds first if you don't know it.
+    NOT a non-Discord UUID. Call discord-ext_list_guilds first if you don't know it.
   • query — search string to match against usernames/nicknames (e.g. "jessica")
 
 Optional:
@@ -125,9 +125,9 @@ Example: discord-ext_search_members({ guild_id: "1396724253621223584", query: "j
 
 Required parameters:
   • guild_id — Discord guild snowflake ID (17-19 digit integer string, e.g. "1396724253621223584").
-    NOT an OpenButler UUID. Call discord-ext_list_guilds first if you don't know it.
+    NOT a non-Discord UUID. Call discord-ext_list_guilds first if you don't know it.
   • user_id — Discord user snowflake ID (17-19 digit integer string, e.g. "281937542917916673").
-    NOT an OpenButler UUID. Call discord-ext_search_members or discord-ext_list_members first.
+    NOT a non-Discord UUID. Call discord-ext_search_members or discord-ext_list_members first.
 
 Optional:
   • nick — new nickname string (set to null to clear)

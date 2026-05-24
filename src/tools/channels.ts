@@ -53,7 +53,7 @@ Returns each channel's Discord snowflake ID (a 17-19 digit integer string like "
 
 IMPORTANT — two different kinds of "channel ID" exist in this system:
   • Discord channel ID: a 17-19 digit snowflake number (e.g. "1471337835444310187"). This is what this tool uses.
-  • OpenButler channel ID: a short UUID like "bcdf5931-...". Used in OpenButler's own job routing — completely different.
+  • Non-Discord channel ID: a short UUID like "bcdf5931-...". Used in other apps' internal routing — completely different.
 Never confuse them. This tool only understands Discord snowflake IDs.
 
 Required parameter:
@@ -96,7 +96,7 @@ Example result item: { "id": "1471337835444310187", "name": "sportsnews", "type"
 Returns the channel's snowflake id, type, and (for guild channels) name and guild_id.
 
 IMPORTANT — channel_id here is a Discord snowflake (17-19 digit integer string like "1471337835444310187"),
-NOT an OpenButler channel UUID (like "bcdf5931-..."). These are completely different identifiers.
+NOT a non-Discord channel UUID (like "bcdf5931-..."). These are completely different identifiers.
 
 If you only know the channel name (e.g. "#sportsnews"), call discord-ext_list_channels first to look up its snowflake ID.
 
@@ -161,7 +161,7 @@ Example: discord-ext_create_channel({ guild_id: "1396...", name: "new-alerts", t
 
 Required parameter:
   • channel_id — Discord channel snowflake ID (17-19 digits, e.g. "1471337835444310187").
-    NOT an OpenButler channel UUID. Call discord-ext_list_channels to look up a channel snowflake by name.
+    NOT a non-Discord channel UUID. Call discord-ext_list_channels to look up a channel snowflake by name.
 
 Optional parameters (omit to leave unchanged):
   • name — new channel name
@@ -198,7 +198,7 @@ Returns updated channel id and name.`,
 
 Required parameter:
   • channel_id — Discord channel snowflake ID (17-19 digits, e.g. "1471337835444310187").
-    NOT an OpenButler channel UUID. Use discord-ext_list_channels to look up the snowflake by channel name.
+    NOT a non-Discord channel UUID. Use discord-ext_list_channels to look up the snowflake by channel name.
 
 WARNING: Deletion is permanent. Confirm the correct snowflake before calling.`,
       inputSchema: DeleteChannelSchema,
@@ -223,7 +223,7 @@ WARNING: Deletion is permanent. Confirm the correct snowflake before calling.`,
       description: `Set a permission overwrite for a role or member on a specific Discord channel.
 
 Required parameters:
-  • channel_id — Discord channel snowflake ID (17-19 digits). NOT an OpenButler channel UUID.
+  • channel_id — Discord channel snowflake ID (17-19 digits). NOT a non-Discord channel UUID.
   • target_id — snowflake ID of the role or member to set permissions for
   • target_type — "role" or "member"
 

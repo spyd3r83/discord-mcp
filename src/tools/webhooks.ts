@@ -38,7 +38,7 @@ export function registerWebhookTools(server: McpServer): void {
 
 Required parameters:
   • channel_id — Discord channel snowflake ID (17-19 digit integer string, e.g. "1396725483621223584").
-    NOT an OpenButler UUID. Call discord-ext_list_channels first if you don't know it.
+    NOT a non-Discord UUID. Call discord-ext_list_channels first if you don't know it.
 
 Returns: [{ id, name, url }]
 
@@ -64,7 +64,7 @@ Example: discord-ext_list_webhooks({ channel_id: "1396725483621223584" })`, inpu
 
 Required parameters:
   • channel_id — Discord channel snowflake ID (17-19 digit integer string, e.g. "1396725483621223584").
-    NOT an OpenButler UUID. Call discord-ext_list_channels first if you don't know it.
+    NOT a non-Discord UUID. Call discord-ext_list_channels first if you don't know it.
   • name — name for the webhook (e.g. "Announcements")
 
 Optional:
@@ -96,7 +96,7 @@ Example: discord-ext_create_webhook({ channel_id: "1396725483621223584", name: "
 
 Required parameters:
   • webhook_id — Discord webhook snowflake ID (17-19 digit integer string, e.g. "1396726000621223584").
-    NOT an OpenButler UUID. Call discord-ext_list_webhooks first if you don't know it.
+    NOT a non-Discord UUID. Call discord-ext_list_webhooks first if you don't know it.
 
 Returns: "Webhook deleted"
 
@@ -120,7 +120,7 @@ Example: discord-ext_delete_webhook({ webhook_id: "1396726000621223584" })`, inp
 
 Required parameters:
   • webhook_id — Discord webhook snowflake ID (17-19 digit integer string, e.g. "1396726000621223584").
-    NOT an OpenButler UUID. Call discord-ext_list_webhooks first if you don't know it.
+    NOT a non-Discord UUID. Call discord-ext_list_webhooks first if you don't know it.
   • webhook_token — webhook token string (returned by discord-ext_create_webhook or discord-ext_list_webhooks)
   • content — message text to send
 
