@@ -71,6 +71,7 @@ Returns the sent message's snowflake id and content.
 
 Example:
   discord-ext_send_message({ channel_id: "1397109398337224736", content: "Hello!" })`,
+      inputSchema: SendMessageSchema,
     },
     async (args) => {
       const parsed = SendMessageSchema.safeParse(args);
@@ -101,6 +102,7 @@ Required parameters:
   • content — new message text
 
 Returns updated message id and content.`,
+      inputSchema: EditMessageSchema,
     },
     async (args) => {
       const parsed = EditMessageSchema.safeParse(args);
@@ -128,6 +130,7 @@ Required parameters:
   • message_id — Discord message snowflake ID to delete
 
 Deletion is permanent. The bot must have Manage Messages permission to delete others' messages.`,
+      inputSchema: DeleteMessageSchema,
     },
     async (args) => {
       const parsed = DeleteMessageSchema.safeParse(args);
@@ -155,6 +158,7 @@ Required parameters:
   • message_id — Discord message snowflake ID
 
 Returns: { id, content, author (tag), timestamp }`,
+      inputSchema: GetMessageSchema,
     },
     async (args) => {
       const parsed = GetMessageSchema.safeParse(args);
@@ -195,6 +199,7 @@ Returns an array of { id, content, author } objects, newest first.
 
 Example:
   discord-ext_list_messages({ channel_id: "1471337835444310187", limit: 20 })`,
+      inputSchema: ListMessagesSchema,
     },
     async (args) => {
       const parsed = ListMessagesSchema.safeParse(args);
@@ -225,6 +230,7 @@ Required parameters:
   • message_id — Discord message snowflake ID to pin
 
 The bot must have Manage Messages permission.`,
+      inputSchema: PinMessageSchema,
     },
     async (args) => {
       const parsed = PinMessageSchema.safeParse(args);
@@ -251,6 +257,7 @@ Required parameters:
   • message_id — Discord message snowflake ID to unpin
 
 The bot must have Manage Messages permission.`,
+      inputSchema: PinMessageSchema,
     },
     async (args) => {
       const parsed = PinMessageSchema.safeParse(args);
@@ -286,6 +293,7 @@ Optional embed fields (at least one should be set to make a useful embed):
   • footer — small footer text
 
 Returns the sent message's snowflake id.`,
+      inputSchema: SendEmbedSchema,
     },
     async (args) => {
       const parsed = SendEmbedSchema.safeParse(args);
