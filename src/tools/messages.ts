@@ -1,13 +1,26 @@
 import { z } from "zod";
-import { EmbedBuilder, type TextChannel } from "discord.js";
+import { EmbedBuilder, AttachmentBuilder, type Message, type TextChannel } from "discord.js";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { getClient } from "../client.js";
 import { toolError, toolErrorFromUnknown, zodError } from "../lib/errors.js";
+
+const serializeAttachments = (m: Message) =>
+  [...m.attachments.values()].map((a) => ({
+    id: a.id,
+    url: a.url,
+    proxyUrl: a.proxyURL,
+    contentType: a.contentType,
+    filename: a.name,
+    size: a.size,
+    width: a.width,
+    height: a.height,
+  }));
 
 const SendMessageSchema = z.object({
   channel_id: z.string(),
   content: z.string(),
   reply_to_id: z.string().optional(),
+  attachments: z.array(z.object({ url: z.string().url().refine((u) => u.startsWith("https://"), { message: "Attachment URL must use HTTPS" }), filename: z.string().optional() })).optional(),
 });
 
 const EditMessageSchema = z.object({
@@ -66,8 +79,9 @@ Required parameters:
 
 Optional:
   • reply_to_id — snowflake ID of a message to reply to (creates a threaded reply)
+  • attachments — array of { url, filename? } objects to attach files to the message
 
-Returns the sent message's snowflake id and content.
+Returns the sent message's snowflake id, content, and attachments.
 
 Example:
   discord-ext_send_message({ channel_id: "1397109398337224736", content: "Hello!" })`,
@@ -79,11 +93,12 @@ Example:
       try {
         const channel = await getClient().channels.fetch(parsed.data.channel_id);
         if (!channel?.isTextBased()) return toolError("Channel not found or not text-based");
-        const options = parsed.data.reply_to_id
-          ? { content: parsed.data.content, reply: { messageReference: parsed.data.reply_to_id } }
-          : { content: parsed.data.content };
+        const files = parsed.data.attachments?.map((a) => new AttachmentBuilder(a.url).setName(a.filename ?? "file"));
+        const options: Record<string, unknown> = { content: parsed.data.content };
+        if (parsed.data.reply_to_id) options.reply = { messageReference: parsed.data.reply_to_id };
+        if (files?.length) options.files = files;
         const msg = await (channel as TextChannel).send(options);
-        return { content: [{ type: "text" as const, text: JSON.stringify({ id: msg.id, content: msg.content }) }] };
+        return { content: [{ type: "text" as const, text: JSON.stringify({ id: msg.id, content: msg.content, attachments: serializeAttachments(msg) }) }] };
       } catch (err) {
         return toolErrorFromUnknown(err);
       }
@@ -101,7 +116,7 @@ Required parameters:
   • message_id — Discord message snowflake ID to edit
   • content — new message text
 
-Returns updated message id and content.`,
+Returns updated message id, content, and attachments.`,
       inputSchema: EditMessageSchema,
     },
     async (args) => {
@@ -112,7 +127,7 @@ Returns updated message id and content.`,
         if (!channel?.isTextBased()) return toolError("Channel not found or not text-based");
         const msg = await (channel as TextChannel).messages.fetch(parsed.data.message_id);
         const edited = await msg.edit(parsed.data.content);
-        return { content: [{ type: "text" as const, text: JSON.stringify({ id: edited.id, content: edited.content }) }] };
+        return { content: [{ type: "text" as const, text: JSON.stringify({ id: edited.id, content: edited.content, attachments: serializeAttachments(edited) }) }] };
       } catch (err) {
         return toolErrorFromUnknown(err);
       }
@@ -157,7 +172,7 @@ Required parameters:
     NOT a non-Discord channel UUID. Use discord-ext_list_channels to look up channel snowflakes by name.
   • message_id — Discord message snowflake ID
 
-Returns: { id, content, author (tag), timestamp }`,
+Returns: { id, content, author (tag), timestamp, attachments }`,
       inputSchema: GetMessageSchema,
     },
     async (args) => {
@@ -170,7 +185,7 @@ Returns: { id, content, author (tag), timestamp }`,
         return {
           content: [{
             type: "text" as const,
-            text: JSON.stringify({ id: msg.id, content: msg.content, author: msg.author.tag, timestamp: msg.createdAt }),
+            text: JSON.stringify({ id: msg.id, content: msg.content, author: msg.author.tag, timestamp: msg.createdAt, attachments: serializeAttachments(msg) }),
           }],
         };
       } catch (err) {
@@ -195,7 +210,7 @@ Optional parameters:
   • before — return messages before this message snowflake ID (for pagination)
   • after — return messages after this message snowflake ID (for pagination)
 
-Returns an array of { id, content, author } objects, newest first.
+Returns an array of { id, content, author, timestamp, attachments } objects, newest first.
 
 Example:
   discord-ext_list_messages({ channel_id: "1471337835444310187", limit: 20 })`,
@@ -212,7 +227,7 @@ Example:
         if (parsed.data.before) options.before = parsed.data.before;
         if (parsed.data.after) options.after = parsed.data.after;
         const messages = await (channel as TextChannel).messages.fetch(options);
-        const list = messages.map((m) => ({ id: m.id, content: m.content, author: m.author.tag }));
+        const list = messages.map((m) => ({ id: m.id, content: m.content, author: m.author.tag, timestamp: m.createdAt, attachments: serializeAttachments(m) }));
         return { content: [{ type: "text" as const, text: JSON.stringify(list) }] };
       } catch (err) {
         return toolErrorFromUnknown(err);
